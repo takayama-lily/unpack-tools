@@ -4,83 +4,37 @@
 	<title>Unpack Tools</title>
 </head>
 <body>
-	<header style="float: right;"><a id="new-tab" target="_blank" href="#">Open a New Tab</a></header>
-	<div>
-		<b>Content (hex)</b>
-		<select id="type">
-			<option value="1">Hex2String</option>
-			<option value="2">Hex2Integer</option>
-			<option value="3">UnProtobuf(unimplemented)</option>
-			<option value="4">UnJce(unimplemented)</option>
-			<option value="5">UnQQTea(unimplemented)</option>
-		</select>
-		<button id="do">DO!</button>
-		<i style="font-size: 12px;"><span id="bytes-cnt">0</span> bytes</i>
-		<br><br>
-		<textarea cols="100" rows="20" id="content"></textarea>
-	</div>
-	<div>
-		<b>Key (hex):</b>
-		<input size="48" id="key">
-	</div>
+
+<header style="float: right;"><a id="new-tab" target="_blank" href="#">Open a New Tab</a></header>
+<div>
+	<b>Content (hex)</b>
+	<select id="type">
+		<option value="UnProtobuf">UnProtobuf</option>
+		<option value="UnJce">UnJce</option>
+		<option value="UnQQTea">UnQQTea</option>
+		<option value="EnQQTea">EnQQTea</option>
+	</select>
+	<button id="do">DO!</button>
+	<i style="font-size: 12px;"><span id="bytes-cnt">0</span> bytes</i>
+	<br><br>
+	<textarea cols="100" rows="20" id="content">08 03 18 02 2a 02 08 02 2a 02 10 05 32 02 18 04 3a 1a 41 42 43 44 45 46 47 48 49 4a 4b 4c 4d 4e 4f 50 51 52 53 54 55 56 57 58 59 5a</textarea>
+</div>
+<div>
+	<b>Crypto Key (hex):</b>
+	<input size="48" id="key" value="00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00">
+</div>
+<br>
+<div>
+	<b>Result:</b>
 	<br>
-	<div>
-		<b>Result:</b>
-		<br>
-		<div id="result" style="background-color: aliceblue; padding: 10px;"></div>
-	</div>
+	<pre id="result" style="background-color: aliceblue; padding: 10px; white-space: pre-wrap;"></pre>
+</div>
 
-<script>
-const $ = document.querySelector.bind(document)
-$("#new-tab").href = location.href
-$("#content").onchange = function () {
-	const cnt = String(this.value).replace(/\s/g, "").length / 2
-	$("#bytes-cnt").innerHTML = String(Math.floor(cnt))
-}
-
-$("#do").onclick = function () {
-	const type = $("#type").value
-	const content = $("#content").value.replace(/\s/g, "")
-	let result
-	try {
-		switch (type) {
-		case "1":
-			result = hex2str(content)
-			break
-		case "2":
-			{
-				const bytes = hex2bytes(content)
-				while (bytes.length < 4)
-					bytes.unshift(0)
-				const dv = new DataView(new Uint8Array(bytes).buffer)
-				result = dv.getUint32()
-			}
-			break
-		default:
-			result = `<span style="color:red">Error: unimplemented</span>`
-			break
-		}
-	} catch (e) {
-		result = `<span style="color:red">Error: failed to unpack (${e.message})</span>`
-	}
-	$("#result").innerHTML = String(result)
-}
-
-function hex2bytes(hex = "") {
-	const bytes = []
-	for (let i = 0; i < hex.length; i += 2)
-		bytes.push(parseInt(hex.substr(i, 2), 16))
-	return bytes
-}
-
-function hex2str(hex) {
-	let str = ""
-	for (let i = 0; i < hex.length; i += 2)
-		str += "%" + hex.substr(i, 2)
-	return decodeURIComponent(str);
-}
-
-</script>
+<script src="buffer@6.0.3.js"></script>
+<script src="protobuf.min.js"></script>
+<script src="app.js"></script>
+<script src="pb.js"></script>
+<script src="qqtea.js"></script>
 
 </body>
 </html>
