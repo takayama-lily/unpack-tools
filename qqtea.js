@@ -1,3 +1,8 @@
+/**
+ * unpack-tools (c) 2022, takayama lily
+ * licensed under the GNU Affero General Public License v3.0
+ * @see https://github.com/takayama-lily/unpack-tools/blob/main/LICENSE
+ */
 (function(){
 	const BUF7 = Buffer.alloc(7);
 	const deltas = [

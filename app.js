@@ -1,3 +1,8 @@
+/**
+ * unpack-tools (c) 2022, takayama lily
+ * licensed under the GNU Affero General Public License v3.0
+ * @see https://github.com/takayama-lily/unpack-tools/blob/main/LICENSE
+ */
 const $ = document.querySelector.bind(document)
 const Buffer = buffer.Buffer
 
@@ -65,22 +70,7 @@ function prettifyHex(hex) {
 	return hex.replace(/\s/g, "").replace(/(.)(.)/g, '$1$2 ')
 }
 
-function hex2bytes(hex = "") {
-	const bytes = []
-	for (let i = 0; i < hex.length; i += 2)
-		bytes.push(parseInt(hex.substr(i, 2), 16))
-	return bytes
-}
-
-function hex2str(hex) {
-	let str = ""
-	for (let i = 0; i < hex.length; i += 2)
-		str += "%" + hex.substr(i, 2)
-	return decodeURIComponent(str);
-}
-
 // {
-// 	const bytes = hex2bytes(content)
 // 	while (bytes.length < 4)
 // 		bytes.unshift(0)
 // 	const dv = new DataView(new Uint8Array(bytes).buffer)
